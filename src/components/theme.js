@@ -8,4 +8,8 @@ export const Theme = {
   cancel: 'hsla(0, 0%, 50%, 1)', // #808080
   fontPrimary: 'Verdana',
   fontSecondary: '',
+  fontSizeSm: '',
+  fontSizeMd: '',
+  fontSizeLg: '',
+  fontSizeHd: '',
 };

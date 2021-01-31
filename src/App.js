@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom';
+import Landing from './components/LandingComponent';
 import Home from './components/HomeComponent';
 import List from './components/ListComponent';
+import Editor from './components/EditorComponent';
 
 
 function App() {
@@ -10,9 +12,11 @@ function App() {
       <div className="App">
         <div />
         <Switch>
+          <Route exact path="/" render={() => <Landing />} />
           <Route exact path="/home" render={() => <Home />} />
           <Route exact path="/list" render={() => <List />} />
-          <Redirect to="/home" />
+          <Route exact path="/editor" render={() => <Editor />} />
+          <Redirect to="/" />
         </Switch>
         <div />
       </div>
