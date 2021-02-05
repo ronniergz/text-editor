@@ -5,8 +5,6 @@ import styled from 'styled-components';
 //import { Theme } from './theme';
 
 const Container = styled.div`
-  margin: 0 auto;
-  width: 90%;
 `;
 
 const Document = styled.textarea`
@@ -38,9 +36,6 @@ const Button3 = styled.button`
 `;
 
 const initialState = {
-  documentName: 'Untitled',
-  docuementDate: Date.now(),
-  documentBody: '',
   nameInput: '',
   modalVisible: false,
 }
@@ -54,28 +49,21 @@ class Editor extends Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleRename = this.handleRename.bind(this);
+    this.test = this.test.bind(this);
   };
 
   handleExitDoc(e) {
-    alert('Exiting document.  Are you sure you saved!?');
+   // alert('Exiting document.  Are you sure you saved!?');
     e.preventDefault();
     window.location.href = '/home';
   };
 
   handleSave(e) {
     e.preventDefault();
-
     // # save title and body to local storage
-
-    // get current data from local storage
-    let currentDocs = JSON.parse(localStorage.getItem("documentList"));
-    // check if document title already exists
-
     // No?  Add new document
-    let
-
-      alert('Document Saved');
-  };
+    alert('Document Saved');
+  }
 
   handleChange(e) {
     this.setState({ nameInput: e.target.value });
@@ -88,10 +76,8 @@ class Editor extends Component {
     this.setState({
       documentName: newName,
       nameInput: '',
-    }, () => console.log(this.state))
-    alert(newName);
+    })
     this.hideModal(e);
-
   };
 
   showModal(e) {
@@ -104,18 +90,25 @@ class Editor extends Component {
     this.setState({ modalVisible: false })
   };
 
+  test(e) {
+    e.preventDefault();
+    console.log(JSON.stringify(this.props.document.body));
+  }
+
+
   render() {
     return (
-      <Container>
-        <h1>Editor Page</h1>
+      <Container style={{display: this.props.display}}>
         <form>
-          <h4>{this.state.documentName}</h4>
+          <h4>{this.props.document.title}</h4>
+          <p>{this.props.document.date}</p>
           <ButtonGroup>
             <Button1 onClick={this.handleExitDoc}>Exit</Button1>
             <Button2 onClick={this.showModal.bind(this)}>Rename</Button2>
             <Button3 onClick={this.handleSave}>Save</Button3>
+            <button onClick={this.test}>Test</button>
           </ButtonGroup>
-          <Document />
+          <Document defaultValue={this.props.document.body}></Document>
         </form>
 
         <Rodal visible={this.state.modalVisible} onClose={this.hideModal.bind(this)}>
@@ -128,6 +121,7 @@ class Editor extends Component {
             </form>
           </div>
         </Rodal>
+
       </Container>
     );
   }

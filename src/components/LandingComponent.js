@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Theme } from './theme';
+// import { Theme } from './theme';
 
 const Container = styled.div`
   margin: 0 auto 10vh auto;
