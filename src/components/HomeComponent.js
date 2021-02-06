@@ -40,40 +40,27 @@ class Home extends Component {
     // this.addDocument = this.addDocument.bind(this);
     this.handleOpenEditor = this.handleOpenEditor.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.test = this.test.bind(this);
   }
 
-  // componentDidMount() {
-  //   // get document list from local storage
-  //   // console.log(JSON.parse(localStorage.getItem('documentList')));
-  //   this.setState({ documentList: JSON.parse(localStorage.getItem('documentList')) || [] });
-  // }
-  
-  // addDocument(document) {
-  //     const currentList = this.state.documents;
-  //     currentList.push(document);
-  //     this.setState({ documents: currentList});
-  // }
-
   handleOpenEditor = doc => () => {
-    console.log("Edit: " + doc.title);
-
     this.setState({
       currentDoc: doc,
       listDisplay: false,
       editorDisplay: true,
-    }, () => {
-      console.log(JSON.stringify(this.state.currentDoc));
-      }
-    );
+    });
 
   };
 
-  handleDelete = i => () => {
-    // delete document at index 'i'
+  handleDelete(i) { 
     let currentList = this.state.documents;
     currentList.splice(i,1);
     this.setState({ documents: currentList});
-  }
+  };
+
+  test() {
+
+  }; 
 
   render() {
     return (
@@ -90,7 +77,7 @@ class Home extends Component {
               <div key={i}>
                 <p >{this.state.documents[i].title}</p>
                 <button onClick={this.handleOpenEditor(this.state.documents[i])}> Edit </button>
-                <button onClick={this.handleDelete(i)}> Delete </button>
+                <button onClick={() => {if(window.confirm('Are you sure you want to delete this file?')){this.handleDelete(i)};}}> Delete </button>
               </div>
             );
           })}
