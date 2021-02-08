@@ -36,7 +36,12 @@ const Button3 = styled.button`
 `;
 
 const initialState = {
-  nameInput: '',
+  document: {
+    title: '',
+    date: '',
+    body: '',
+  },
+  renameInput: '',
   modalVisible: false,
 }
 
@@ -49,33 +54,39 @@ class Editor extends Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleRename = this.handleRename.bind(this);
-    this.test = this.test.bind(this);
+    //this.handleTest = this.handleTest.bind(this);
   };
 
+  static getDerivedStateFromProps(props) {
+    return {document: props.document};
+  }
+
   handleExitDoc(e) {
-   // alert('Exiting document.  Are you sure you saved!?');
-    e.preventDefault();
+    e.preventDefault();  // alert('Exiting document.  Are you sure you saved!?');
     window.location.href = '/home';
   };
 
   handleSave(e) {
     e.preventDefault();
-    // # save title and body to local storage
-    // No?  Add new document
-    alert('Document Saved');
+    this.props.save(this.state.document);
   }
 
   handleChange(e) {
-    this.setState({ nameInput: e.target.value });
+    const input = e.target;   // input element
+    const field = input.name;  // 'renameInput' or 'body'
+    if (field === 'renameInput') this.setState({ renameInput: input.value });
+    const currentDoc = this.state.document;  // current state
+    currentDoc[field] = input.value;
+    this.setState({ document: currentDoc });
   }
 
   handleRename(e) {
     e.preventDefault();
-    console.log("handleRename");
-    const newName = this.state.nameInput;
+    let currentDoc = this.state.document;
+    currentDoc.title = this.state.renameInput;
     this.setState({
-      documentName: newName,
-      nameInput: '',
+      document: currentDoc,
+      renameInput: '',
     })
     this.hideModal(e);
   };
@@ -90,25 +101,23 @@ class Editor extends Component {
     this.setState({ modalVisible: false })
   };
 
-  test(e) {
+  handleTest(e) {
     e.preventDefault();
-    console.log(JSON.stringify(this.props.document.body));
-  }
-
+    this.props.testFunction("YASSS!");
+  };
 
   render() {
     return (
       <Container style={{display: this.props.display}}>
         <form>
-          <h4>{this.props.document.title}</h4>
-          <p>{this.props.document.date}</p>
+          <h4>{this.state.document.title}</h4>
+          <p>{this.state.document.date}</p>
           <ButtonGroup>
             <Button1 onClick={this.handleExitDoc}>Exit</Button1>
             <Button2 onClick={this.showModal.bind(this)}>Rename</Button2>
             <Button3 onClick={this.handleSave}>Save</Button3>
-            <button onClick={this.test}>Test</button>
           </ButtonGroup>
-          <Document defaultValue={this.props.document.body}></Document>
+          <Document value={this.state.document.body} onChange={this.handleChange} name="body"></Document>
         </form>
 
         <Rodal visible={this.state.modalVisible} onClose={this.hideModal.bind(this)}>
@@ -116,7 +125,7 @@ class Editor extends Component {
             Rename Modal
             <form onSubmit={this.handleRename}>
               <label htmlFor="nameEdit" >New Name</label>
-              <input type="text" value={this.state.nameInput} onChange={this.handleChange} id="nameEdit" name="nameInput" />
+              <input type="text" placeholder={this.state.document.title} value={this.state.nameInput} onChange={this.handleChange} name="renameInput" />
               <button type="submit">Save</button>
             </form>
           </div>
